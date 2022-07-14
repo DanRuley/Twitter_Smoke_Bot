@@ -15,8 +15,8 @@ namespace HRRR_Scraper
         {
             ChromeDriver Driver = new ChromeDriver();
             List<SmokeForecast> scrapedForecasts = new List<SmokeForecast>() {
-                new SmokeForecast { region = "NW", imgURLs = new List<string>() },
-                new SmokeForecast { region = "SW", imgURLs = new List<string>() } };
+                new SmokeForecast { region = "SW", imgURLs = new List<string>() },
+                new SmokeForecast { region = "NW", imgURLs = new List<string>() } };
 
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(60);
             Driver.Manage().Window.Maximize();
@@ -65,7 +65,7 @@ namespace HRRR_Scraper
                 else
                 {
                     forecasts.Add(forecast);
-                    forecast.forecastDir = $@"{SmokeBot.baseDirectory}\{forecast.forecastID}_{forecast.region}";
+                    forecast.forecastDir = $@"{SmokeBot.baseDirectory}\forecasts\{forecast.forecastID}_{forecast.region}";
                     CreateForecastDirectory(forecast);
                     DownloadForecastImages(forecast);
                 }

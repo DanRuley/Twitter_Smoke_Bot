@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HRRR_Scraper
 {
@@ -59,12 +57,24 @@ namespace HRRR_Scraper
 
         public static void Main(string[] args)
         {
-            completed = ReadCompletedForecastLog($@"{baseDirectory}\forecast_log.log");
+            try
+            {
+                completed = ReadCompletedForecastLog($@"{baseDirectory}\run.log");
 
-            ImageScraper scraper = new ImageScraper();
-            List<SmokeForecast> forecasts = scraper.ScrapeHRRRData();
-            RunMp4CreationScript(forecasts);
-            PostToTwitter(forecasts);
+                ImageScraper scraper = new ImageScraper();
+                List<SmokeForecast> forecasts = scraper.ScrapeHRRRData();
+                RunMp4CreationScript(forecasts);
+                PostToTwitter(forecasts);
+            }
+            catch (Exception e)
+            {
+                using (StreamWriter sw = File.AppendText(@"c:\users\drslc\Twitter_Smoke_Bot\error_log.log"))
+                {
+                    sw.WriteLine($"{DateTime.Now} - C# App Error: {e.Message}");
+                    sw.WriteLine(e.StackTrace);
+                }
+                throw;
+            }
         }
     }
 }
