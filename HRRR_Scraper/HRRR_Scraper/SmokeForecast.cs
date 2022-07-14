@@ -33,7 +33,6 @@ namespace HRRR_Scraper
         public string forecastDir { get; set; }
         public List<string> imgURLs { get; set; }
 
-
         public void ParseAndSetDates(string rawDate)
         {
             Regex rgx = new Regex("([\\d]+)\\s*([A-Za-z]+)\\s*([\\d]{4})\\s-\\s([\\d]+)");

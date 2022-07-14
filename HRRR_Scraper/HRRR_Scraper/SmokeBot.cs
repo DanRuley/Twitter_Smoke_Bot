@@ -10,7 +10,7 @@ namespace HRRR_Scraper
 {
     class SmokeBot
     {
-        public static readonly string baseDirectory = @"c:\drslc\Twitter_Smoke_Bot";
+        public static readonly string baseDirectory = @"c:\users\drslc\Twitter_Smoke_Bot";
         public static HashSet<string> completed;
 
         //Trivial to do w/ python, annoying with C#
@@ -32,10 +32,15 @@ namespace HRRR_Scraper
             {
                 string scriptPath = @$"{baseDirectory}\Python_Scripts\upload_vid_post_tweet.py";
                 string videoPath = @$"{forecast.forecastDir}\{forecast.forecastID}_{forecast.region}.mp4";
-                string tweetTxt = $"Forecast range: {forecast.forecastStart} thru {forecast.forecastEnd}";
+                string tweetTxt = $"\"{forecast.region} Region\nForecast range: {GetPrettyDate(forecast.forecastStart)} thru {GetPrettyDate(forecast.forecastEnd)} (MST)\"";
                 string[] scriptArgs = new string[] { scriptPath, videoPath, tweetTxt };
                 RunPythonScript(scriptArgs);
             }
+        }
+
+        private static string GetPrettyDate(DateTime dts)
+        {
+            return $"{dts.ToShortDateString()} {dts.ToShortTimeString().Replace(":00 ", "")}";
         }
 
         private static void RunPythonScript(string[] args)
@@ -43,7 +48,8 @@ namespace HRRR_Scraper
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = @"C:\Python310\python.exe";
             startInfo.Arguments = string.Join(' ', args);
-            Process.Start(startInfo);
+            var proc = Process.Start(startInfo);
+            proc.WaitForExit();
         }
 
         private static HashSet<string> ReadCompletedForecastLog(string path)

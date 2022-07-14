@@ -4,8 +4,8 @@ import sys
 
 if __name__ == '__main__':
 
-    image_folder = "C:\\imgs\\2022071207_NW"
-    output = "C:\\imgs\\2022071207_NW\\test1.mp4"
+    image_folder = "c:\\users\\drslc\\Twitter_Smoke_Bot\\2022071411_NW"
+    output = "c:\\users\\drslc\\Twitter_Smoke_Bot\\2022071411_NW\\2022071411_NW.mp4"
 
     if(len(sys.argv) > 1):
         image_folder = sys.argv[1]
@@ -15,4 +15,4 @@ if __name__ == '__main__':
                 for img in os.listdir(image_folder)
                 if img.endswith(".png")]
     clip = ImageSequenceClip(image_files, durations=[0.15 for _ in image_files])
-    clip.write_videofile(output, fps = 60)
+    clip.write_videofile(output, fps = 30)

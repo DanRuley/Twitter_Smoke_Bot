@@ -56,7 +56,7 @@ namespace HRRR_Scraper
             // Sometimes the site is not updated for a while, so if these forecasts in scrapedForecasts are in our log file we do not bother with them.
             List<SmokeForecast> forecasts = new List<SmokeForecast>();
 
-            foreach (var forecast in forecasts)
+            foreach (var forecast in scrapedForecasts)
             {
                 forecast.ParseAndSetDates(rawDate);
 
@@ -86,7 +86,7 @@ namespace HRRR_Scraper
                     string fileName = Regex.Replace(imgURL, @".*\/([\d]{10})(\/[A-Z]{2}\/).*([\d]{3}\.png)", "$1$2$3").Replace('/', '_');
 
                     client.DownloadFile(new Uri(imgURL), $@"{forecast.forecastDir}\{fileName}");
-                    Thread.Sleep(1500);             //Add sleeps to avoid spamming server
+                    Thread.Sleep(200);             //Add sleeps to avoid spamming server
                 }
             }
         }

@@ -25,15 +25,14 @@ def upload_video_and_tweet(vid_file_path, tweet_msg):
 
     media = api.media_upload(
         vid_file_path,
-        media_category="tweet_video",
-        chunked=False,
+        media_category="tweet_video"
     )
     response = client.create_tweet(text=tweet_msg, media_ids=[media.media_id])
     print(f"https://twitter.com/user/status/{response.data['id']}")
 
 
 if __name__ == "__main__":
-    fp = "c:\\imgs\\2022071207_NW\\test1.mp4"
+    fp = "c:\\users\\drslc\\Twitter_Smoke_Bot\\2022071411_NW\\2022071411_NW.mp4"
     msg = "media upload test"
     
     if(len(sys.argv) > 1):
