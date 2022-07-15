@@ -2,6 +2,7 @@ import os
 from moviepy.video.io.ImageSequenceClip import ImageSequenceClip
 import sys
 from datetime import datetime
+from logger import *
 
 if __name__ == '__main__':
     try:
@@ -19,7 +20,6 @@ if __name__ == '__main__':
         clip.write_videofile(output, fps = 30)
 
     except Exception as e:
-        elog = open("..\\error_log.log", "a")
         dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        elog.write(f"{dt_string} - Error in video creation script: {str(e)}\n\n")
+        append_log(get_log_file_path("error_log.log", f"{dt_string} - Error in mkvid script: {str(e)}\n\n"))
         raise(e)

@@ -3,19 +3,12 @@ import os
 import sys
 import re
 from datetime import datetime
+from logger import get_log_file_path, append_log
 
 consumer_key = os.getenv("API_KEY")
 consumer_secret = os.getenv("API_SECRET")
 access_token = os.getenv("ACCESS_TOKEN")
 access_token_secret = os.getenv("ACCESS_TOKEN_SECRET")
-
-def log_successful_tweet(vid_path):
-    m = re.search(r"\\([\d]+_[A-Z]+)\\", vid_path)
-    id = m.groups()[0]
-    fp = open("..\\run.log", "a")
-    fp.write(f"{id}\n")
-
-
 
 def upload_video_and_tweet(vid_file_path, tweet_msg):
     # api v1 authentication (media upload still only supported by v1)
@@ -39,12 +32,12 @@ def upload_video_and_tweet(vid_file_path, tweet_msg):
     response = client.create_tweet(text=tweet_msg, media_ids=[media.media_id])
     print(f"https://twitter.com/user/status/{response.data['id']}")
 
-    log_successful_tweet(vid_file_path)
-
+    fc_id = re.search(r"\\([\d]+_[A-Z]+)\\", vid_file_path).groups()[0]
+    append_log(get_log_file_path("run.log"), f"{fc_id}\n")
 
 if __name__ == "__main__":
     try:
-        fp = "c:\\users\\drslc\\Twitter_Smoke_Bot\\2022071411_NW\\2022071411_NW.mp4"
+        fp =  "C:\\Users\\drslc\\Twitter_Smoke_Bot\\forecasts\\2022071501_SW\\2022071501_SW.mp4"
         msg = "media upload test"
         if(len(sys.argv) > 1):
             fp = sys.argv[1]
@@ -52,7 +45,6 @@ if __name__ == "__main__":
 
         upload_video_and_tweet(fp, msg)
     except Exception as e:
-        elog = open("..\\error_log.log", "a")
         dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        elog.write(f"{dt_string} - Error in tweet post script: {str(e)}\n\n")
+        append_log(get_log_file_path("error_log.log", f"{dt_string} - Error in tweet post script: {str(e)}\n\n"))
         raise(e)
