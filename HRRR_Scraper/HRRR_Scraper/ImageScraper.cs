@@ -11,9 +11,11 @@ namespace HRRR_Scraper
 {
     class ImageScraper
     {
+        ChromeDriver Driver;
+
         public List<SmokeForecast> ScrapeHRRRData()
         {
-            ChromeDriver Driver = new ChromeDriver();
+            Driver = new ChromeDriver();
             List<SmokeForecast> scrapedForecasts = new List<SmokeForecast>() {
                 new SmokeForecast { region = "SW", imgURLs = new List<string>() },
                 new SmokeForecast { region = "NW", imgURLs = new List<string>() } };
@@ -71,9 +73,6 @@ namespace HRRR_Scraper
                 }
             }
 
-            Driver.Close();
-            Driver.Quit();
-
             return forecasts;
         }
 
@@ -94,6 +93,12 @@ namespace HRRR_Scraper
         private void CreateForecastDirectory(SmokeForecast forecast)
         {
             System.IO.Directory.CreateDirectory(forecast.forecastDir);
+        }
+
+        public void CleanUp()
+        {
+            Driver.Close();
+            Driver.Quit();
         }
     }
 }

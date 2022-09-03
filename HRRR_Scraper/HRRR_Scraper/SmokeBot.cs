@@ -57,11 +57,12 @@ namespace HRRR_Scraper
 
         public static void Main(string[] args)
         {
+            ImageScraper scraper = new ImageScraper();
+
             try
             {
                 completed = ReadCompletedForecastLog($@"{baseDirectory}\run.log");
 
-                ImageScraper scraper = new ImageScraper();
                 List<SmokeForecast> forecasts = scraper.ScrapeHRRRData();
                 RunMp4CreationScript(forecasts);
                 PostToTwitter(forecasts);
@@ -74,6 +75,10 @@ namespace HRRR_Scraper
                     sw.WriteLine(e.StackTrace);
                 }
                 throw;
+            }
+            finally
+            {
+                scraper.CleanUp();
             }
         }
     }
